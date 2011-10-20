@@ -24,6 +24,18 @@
 
 #include "fusefs_fuse.h"
 
+#ifndef STR2CSTR
+	#define STR2CSTR(s) StringValuePtr(s)
+#endif
+
+/* TODO: Apparently checking RUBY_VERSION_CODE is the wrong way */
+#if RUBY_VERSION_CODE > 190
+	char *rb_str2cstr(VALUE s, long int *len) {
+		*len = RSTRING_LEN(s);
+		return StringValuePtr(s);
+	}
+#endif
+
 /* init_time
  *
  * All files will have a modified time equal to this. */
